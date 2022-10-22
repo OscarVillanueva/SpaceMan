@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigidBody;
     private Animator animator;
 
+    private float horizontal;
+
     private const string STATE = "State";
 
     // Start is called before the first frame update
@@ -40,22 +42,36 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Si no estamos en partida no permitimos el movimiento del jugador
+        if (GameManager.sharedInstance.currentGameState != GameState.inGame) return;
 
-        if (IsTouchingTheGround())
+        if (IsTouchingTheGround() && Input.GetButtonDown("Jump"))
         {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-            {
-                Jump();
-            }
-
-            MovePlayer();
+            Jump();
         }
-
-        SetJumpingAnimation(rigidBody.velocity.y);
 
         // Dibujamos el Gizmo para poder ver el raycast para mostrarlo en modo de depuración/Dev
         Debug.DrawRay(transform.position, Vector2.down * 1.5f, Color.red);
         
+    }
+
+    private void FixedUpdate()
+    {
+        // Si no estamos en partida no permitimos el movimiento del jugador
+        if (GameManager.sharedInstance.currentGameState != GameState.inGame) return;
+
+        if (IsTouchingTheGround())
+        {
+            MovePlayer();
+        }
+
+        // Flipeamos al player según sea el caso
+        if (horizontal < 0.0f) transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+        else if (horizontal > 0.0f) transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+        // Setteamos la animación
+        if (horizontal != 0 && rigidBody.velocity.y == 0) animator.SetFloat(STATE, 0.2f);
+        else SetJumpingAnimation(rigidBody.velocity.y);
     }
 
     private void Jump()
@@ -67,7 +83,8 @@ public class PlayerController : MonoBehaviour
 
     private void MovePlayer()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
+        horizontal = Input.GetAxisRaw("Horizontal");
+
         Vector2 moveDirection = new Vector2(horizontal, 0).normalized;
         rigidBody.velocity = new Vector2(moveDirection.x * speed, rigidBody.velocity.y);
     }
@@ -102,5 +119,12 @@ public class PlayerController : MonoBehaviour
 
 
         animator.SetFloat(STATE, value);
+    }
+
+    public void Die()
+    {
+        animator.SetFloat(STATE, 1.0f);
+        GameManager.sharedInstance.GameOver();
+        Destroy(gameObject, 0.5f);
     }
 }
