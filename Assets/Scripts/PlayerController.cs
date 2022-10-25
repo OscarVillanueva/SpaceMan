@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rigidBody;
     private Animator animator;
-
+    private Vector3 startPosition;
     private float horizontal;
 
     private const string STATE = "State";
@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         animator.SetFloat(STATE, 0);
+
+        // Guardamos la posición original
+        startPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -60,10 +63,7 @@ public class PlayerController : MonoBehaviour
         // Si no estamos en partida no permitimos el movimiento del jugador
         if (GameManager.sharedInstance.currentGameState != GameState.inGame) return;
 
-        if (IsTouchingTheGround())
-        {
-            MovePlayer();
-        }
+        MovePlayer();
 
         // Flipeamos al player según sea el caso
         if (horizontal < 0.0f) transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
@@ -72,6 +72,21 @@ public class PlayerController : MonoBehaviour
         // Setteamos la animación
         if (horizontal != 0 && rigidBody.velocity.y == 0) animator.SetFloat(STATE, 0.2f);
         else SetJumpingAnimation(rigidBody.velocity.y);
+    }
+
+
+    public void StartGame()
+    {
+
+        animator.SetFloat(STATE, 0);
+
+        Invoke(nameof(RestartPosition), 0.2f);
+    }
+
+    private void RestartPosition()
+    {
+        transform.position = startPosition;
+        rigidBody.velocity = Vector2.zero;
     }
 
     private void Jump()
@@ -125,6 +140,6 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetFloat(STATE, 1.0f);
         GameManager.sharedInstance.GameOver();
-        Destroy(gameObject, 0.5f);
+        //Destroy(gameObject, 0.5f);
     }
 }

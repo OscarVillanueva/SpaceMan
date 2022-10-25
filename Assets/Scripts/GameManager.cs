@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager sharedInstance;
 
+    private PlayerController playerController;
+
     private void Awake()
     {
         if (sharedInstance == null) sharedInstance = this;
@@ -16,11 +18,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SetGameState(GameState.menu);
+        playerController = GameObject.FindObjectOfType<PlayerController>();
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown("Submit"))
+        if (Input.GetButtonDown("Submit") && currentGameState != GameState.inGame)
         {
             StartGame();
         }
@@ -53,7 +56,8 @@ public class GameManager : MonoBehaviour
 
             case GameState.inGame:
                 currentGameState = GameState.inGame;
-                Time.timeScale = 1.0f; 
+                playerController.StartGame();
+                Time.timeScale = 1.0f;
                 break;
 
             case GameState.gameOver:
