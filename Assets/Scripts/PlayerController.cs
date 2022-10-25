@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     // LayerMask es para indicar o taggear ciertos layers es decir que cierto elemento visual pertenece a que grupo
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private LayerMask levelBlock3;
 
     private Rigidbody2D rigidBody;
     private Animator animator;
@@ -141,5 +142,39 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat(STATE, 1.0f);
         GameManager.sharedInstance.GameOver();
         //Destroy(gameObject, 0.5f);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Verificamos que hayamos chocado con un LevelBlock3
+        bool flag = (levelBlock3.value & (1 << collision.transform.gameObject.layer)) > 0;
+
+        if (flag)
+        {
+
+            CameraFollow cameraFollow = FindObjectOfType<CameraFollow>();
+            Dictionary<string, float> breaks = collision.GetComponentInParent<LevelBlock>().breaks;
+
+            if (collision.name == "EndPoint") cameraFollow.ResetCameraPosition();
+
+            float newOffsetY = TryToGetABreakPoint(breaks, collision.name);
+
+            if (breaks != null && newOffsetY != 0)
+                cameraFollow.ChangeCameraOffset(new(-6.0f, newOffsetY, -10.0f));
+
+        }
+    }
+
+    private float TryToGetABreakPoint(Dictionary<string, float> keyValues, string key)
+    {
+        try
+        {
+            float value = keyValues[key];
+            return value;
+        }
+        catch
+        {
+            return 0.0f;
+        }
     }
 }

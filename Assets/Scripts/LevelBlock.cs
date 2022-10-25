@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class LevelBlock : MonoBehaviour
 {
-    [SerializeField] private Transform startPoint;
-    [SerializeField] private Transform endPoint;
+    public Transform startPoint;
+    public Transform endPoint;
 
-    // Start is called before the first frame update
-    void Start()
+    public Dictionary<string, float> breaks;
+
+    private void Awake()
     {
-        
+        // Agregamos un diccionario de breaks en caso de sea de tipo LevelBlock3
+        if (gameObject.layer == 7)
+        {
+            breaks = new Dictionary<string, float>
+            {
+                { "StartPoint", -5.0f },
+                { "SecondPoint", -8.0f },
+                { "DeepPoint", -12.5f },
+                { "UpPoint", -10.0f },
+                { "LastPoint", -7.0f },
+            };
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
