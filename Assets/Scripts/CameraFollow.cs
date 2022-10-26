@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Vector3 offset = new(-6.0f, -1.0f, -10f);
     [SerializeField] private float dumpingTime = 0.3f;
 
-    [SerializeField] private Vector3 originalOffset;
+    private Vector3 originalOffset;
 
     private void Awake()
     {

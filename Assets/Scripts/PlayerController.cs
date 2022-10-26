@@ -88,6 +88,9 @@ public class PlayerController : MonoBehaviour
     {
         transform.position = startPosition;
         rigidBody.velocity = Vector2.zero;
+
+        GameObject cameraFollow = GameObject.Find("Main Camera");
+        cameraFollow.GetComponent<CameraFollow>().ResetCameraPosition();
     }
 
     private void Jump()

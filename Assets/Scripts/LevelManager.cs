@@ -19,7 +19,7 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         currentLevelBlocks = new List<LevelBlock>();
-        GenerateInitialBlocks();
+        // GenerateInitialBlocks();
     }
 
     public void AddLevelBlock()

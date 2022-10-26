@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     private PlayerController playerController;
 
+    public int collectedObjects = 0;
+
     private void Awake()
     {
         if (sharedInstance == null) sharedInstance = this;
@@ -17,21 +20,18 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SetGameState(GameState.menu);
+        StartGame();
         playerController = GameObject.FindObjectOfType<PlayerController>();
-    }
-
-    private void Update()
-    {
-        if (Input.GetButtonDown("Submit") && currentGameState != GameState.inGame)
-        {
-            StartGame();
-        }
     }
 
     public void StartGame()
     {
         SetGameState(GameState.inGame);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 
     public void GameOver()
@@ -55,13 +55,16 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.inGame:
-                currentGameState = GameState.inGame;
-                playerController.StartGame();
                 Time.timeScale = 1.0f;
+                currentGameState = GameState.inGame;
+                LevelManager.sharedInstance.ClearLevelBlocks();
+                MenuManager.sharedInstance.ShowGameOverMenu(false);
+                Invoke(nameof(ReloadLevel), 0.1f);
                 break;
 
             case GameState.gameOver:
                 currentGameState = GameState.gameOver;
+                Invoke(nameof(StopTime), 1.0f);
                 break;
         }
 
@@ -69,4 +72,23 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void ReloadLevel()
+    {
+        CameraFollow cameraFollow = FindObjectOfType<CameraFollow>();
+        if (cameraFollow) cameraFollow.ResetOffest();
+
+        LevelManager.sharedInstance.GenerateInitialBlocks();
+        playerController.StartGame();
+    }
+
+    private void StopTime()
+    {
+        MenuManager.sharedInstance.ShowGameOverMenu(true);
+        Time.timeScale = 0.0f;
+    }
+
+    public void CollectObject(CollectableController collectable)
+    {
+        collectedObjects = collectedObjects + collectable.value;
+    }
 }

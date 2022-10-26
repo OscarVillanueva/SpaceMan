@@ -9,6 +9,7 @@ TagManager:
   - Start
   - End
   - LevelBlock
+  - Score
   layers:
   - Default
   - TransparentFX
