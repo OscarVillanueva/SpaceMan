@@ -25,10 +25,19 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Vector3 startPosition;
     private float horizontal;
+    private int healhPoints;
+    private int manaPoints;
 
     private const string STATE = "State";
 
-    // Start is called before the first frame update
+    private const int INITIAL_HEALTH = 100;
+    private const int INITIAL_MANA = 15;
+
+    public const int MAX_HEALTH = 200;
+    public const int MAX_MANA = 30;
+    public const int MIN_HEALTH = 10;
+    public const int MIN_MANA = 0; 
+
     void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -41,6 +50,9 @@ public class PlayerController : MonoBehaviour
 
         // Guardamos la posición original
         startPosition = transform.position;
+
+        healhPoints = INITIAL_HEALTH;
+        manaPoints = INITIAL_MANA;
     }
 
     // Update is called once per frame
@@ -78,8 +90,10 @@ public class PlayerController : MonoBehaviour
 
     public void StartGame()
     {
-
         animator.SetFloat(STATE, 0);
+
+        healhPoints = INITIAL_HEALTH;
+        manaPoints = INITIAL_MANA;
 
         Invoke(nameof(RestartPosition), 0.2f);
     }
@@ -179,5 +193,30 @@ public class PlayerController : MonoBehaviour
         {
             return 0.0f;
         }
+    }
+
+    public void CollectHealth(int points)
+    {
+        healhPoints = healhPoints + points;
+
+        if (healhPoints >= MAX_HEALTH) healhPoints = MAX_HEALTH;
+    }
+
+    public void CollectMana(int points)
+    {
+        manaPoints = manaPoints + points;
+
+        if (manaPoints >= MAX_MANA) manaPoints = MAX_MANA;
+
+    }
+
+    public int GetHealth()
+    {
+        return healhPoints;
+    }
+
+    public int GetMana()
+    {
+        return manaPoints;
     }
 }

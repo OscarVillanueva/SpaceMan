@@ -7,13 +7,11 @@ public class CollectableController : MonoBehaviour
     [SerializeField] private CollectableType collectableType = CollectableType.coin;
     public int value = 1;
 
-    private SpriteRenderer spriteRenderer;
-    private CircleCollider2D itemCollider;
+    private PlayerController player;
 
-    private void Awake()
+    private void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        itemCollider = GetComponent<CircleCollider2D>();
+        player = GameObject.FindObjectOfType<PlayerController>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -29,12 +27,27 @@ public class CollectableController : MonoBehaviour
     {
         switch (collectableType)
         {
+
             case CollectableType.coin:
                 GameManager.sharedInstance.CollectObject(this);
                 break;
+
             case CollectableType.healthPotion:
+
+                if (player)
+                {
+                    player.CollectHealth(this.value);
+                }
+
                 break;
+
             case CollectableType.manaPotion:
+
+                if (player)
+                {
+                    player.CollectMana(this.value);
+                }
+
                 break;
         }
 

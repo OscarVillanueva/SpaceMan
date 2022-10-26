@@ -14,11 +14,15 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        if (sharedInstance == null) sharedInstance = this;
+        if (sharedInstance == null)
+        {
+            sharedInstance = this;
+            currentLevelBlocks = new List<LevelBlock>();
+
+        }
     }
     private void Start()
     {
-        currentLevelBlocks = new List<LevelBlock>();
         // GenerateInitialBlocks();
     }
 

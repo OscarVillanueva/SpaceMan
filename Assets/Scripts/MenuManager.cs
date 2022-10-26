@@ -17,8 +17,12 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        inGameCanvas.enabled = false;
         gameOverCanvas.enabled = false;
+    }
+
+    public void ShowScoreBoard(bool enabled)
+    {
+        inGameCanvas.enabled = enabled;
     }
 
     public void ShowGameOverMenu(bool enabled)

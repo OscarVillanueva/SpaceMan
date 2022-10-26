@@ -11,5 +11,6 @@ public class KillZone : MonoBehaviour
             PlayerController playerController = collision.GetComponent<PlayerController>();
             playerController.Die();
         }
+        else Destroy(collision.gameObject, 0.5f);
     }
 }
