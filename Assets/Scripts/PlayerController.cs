@@ -15,11 +15,16 @@ public class PlayerController : MonoBehaviour
 {
 
     [SerializeField] private float jumpForce = 6.0f;
-    [SerializeField] private float speed = 6.0f;
 
     // LayerMask es para indicar o taggear ciertos layers es decir que cierto elemento visual pertenece a que grupo
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private LayerMask levelBlock3;
+
+    [SerializeField] private const int SUPER_JUMP_COST = 5;
+    [SerializeField] private const float SUPER_JUMP_FORCE = 1.5f;
+    [SerializeField] private float jumpRaycastDistance = 1.5f;
+
+    public float speed = 6.0f;
 
     private Rigidbody2D rigidBody;
     private Animator animator;
@@ -36,8 +41,8 @@ public class PlayerController : MonoBehaviour
     public const int MAX_HEALTH = 200;
     public const int MAX_MANA = 30;
     public const int MIN_HEALTH = 10;
-    public const int MIN_MANA = 0; 
-
+    public const int MIN_MANA = 0;
+   
     void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -63,11 +68,17 @@ public class PlayerController : MonoBehaviour
 
         if (IsTouchingTheGround() && Input.GetButtonDown("Jump"))
         {
-            Jump();
+            Jump(false);
+        }
+
+        if (IsTouchingTheGround() && Input.GetButtonDown("SuperJump") && manaPoints >= SUPER_JUMP_COST)
+        {
+            manaPoints = manaPoints - SUPER_JUMP_COST;
+            Jump(true);
         }
 
         // Dibujamos el Gizmo para poder ver el raycast para mostrarlo en modo de depuración/Dev
-        Debug.DrawRay(transform.position, Vector2.down * 1.5f, Color.red);
+        Debug.DrawRay(transform.position, Vector2.down * jumpRaycastDistance, Color.red);
         
     }
 
@@ -107,11 +118,18 @@ public class PlayerController : MonoBehaviour
         cameraFollow.GetComponent<CameraFollow>().ResetCameraPosition();
     }
 
-    private void Jump()
+    public void Jump(bool superJump = false)
     {
+
+        float jumpForceFactor = jumpForce;
+
+        if (superJump) jumpForceFactor = jumpForceFactor * SUPER_JUMP_FORCE;
+
+        GetComponent<AudioSource>().Play();
+
         // ForceMode2D.Impulse es impulso que ocurre en un determinado momento
         // Force es una fuerza constante
-        rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        rigidBody.AddForce(Vector2.up * jumpForceFactor, ForceMode2D.Impulse);
     }
 
     private void MovePlayer()
@@ -128,7 +146,7 @@ public class PlayerController : MonoBehaviour
         // Dibuja el rayo desde el centro del objeto
         // Desde donde esta el player traza un rayo imaginario hacia abajo con una distancia maxima de 20cm 
         // y esta tocando el suelo?
-        if (Physics2D.Raycast(transform.position, Vector2.down, 1.5f, groundMask))
+        if (Physics2D.Raycast(transform.position, Vector2.down, jumpRaycastDistance, groundMask))
         {
             // Reactivamos la animación
             //animator.enabled = false;
@@ -156,9 +174,14 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
+
+        float travelledDistance = GetTravelledDistance();
+        float previousMaxDistance = PlayerPrefs.GetFloat("maxScore", 0.0f);
+
+        if (travelledDistance > previousMaxDistance) PlayerPrefs.SetFloat("maxScore", travelledDistance);
+
         animator.SetFloat(STATE, 1.0f);
         GameManager.sharedInstance.GameOver();
-        //Destroy(gameObject, 0.5f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -200,6 +223,9 @@ public class PlayerController : MonoBehaviour
         healhPoints = healhPoints + points;
 
         if (healhPoints >= MAX_HEALTH) healhPoints = MAX_HEALTH;
+
+        if (healhPoints <= 0) Die();
+
     }
 
     public void CollectMana(int points)
@@ -218,5 +244,15 @@ public class PlayerController : MonoBehaviour
     public int GetMana()
     {
         return manaPoints;
+    }
+
+    public float GetTravelledDistance()
+    {
+        return transform.position.x - startPosition.x;
+    }
+
+    public void ChangeAnimationState(float state)
+    {
+        animator.SetFloat(STATE, state);
     }
 }

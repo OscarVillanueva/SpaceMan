@@ -91,4 +91,10 @@ public class GameManager : MonoBehaviour
     {
         collectedObjects = collectedObjects + collectable.value;
     }
+
+    public void AddDefeatedEnemy(int value)
+    {
+        collectedObjects = collectedObjects + value;
+    }
+
 }

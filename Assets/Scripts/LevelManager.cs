@@ -40,7 +40,8 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            block = Instantiate(levelBlocks[randomIndex]);
+            //block = Instantiate(levelBlocks[randomIndex]);
+            block = Instantiate(levelBlocks[1]);
             spawnPostion = currentLevelBlocks[currentLevelBlocks.Count - 1].endPoint.position;
         }
 

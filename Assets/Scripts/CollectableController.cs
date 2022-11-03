@@ -30,6 +30,7 @@ public class CollectableController : MonoBehaviour
 
             case CollectableType.coin:
                 GameManager.sharedInstance.CollectObject(this);
+                GetComponent<AudioSource>().Play();
                 break;
 
             case CollectableType.healthPotion:
@@ -51,6 +52,8 @@ public class CollectableController : MonoBehaviour
                 break;
         }
 
-        Destroy(gameObject, 0.1f);
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+
+        Destroy(gameObject, 0.5f);
     }
 }

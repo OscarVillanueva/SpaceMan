@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 201392134723042402}
   - component: {fileID: 1960658868312948710}
   - component: {fileID: 1331315475274198046}
-  - component: {fileID: 3852802864889561741}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TallRock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,24 +111,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.27, y: 2.2904212}
   m_EdgeRadius: 0
---- !u!50 &3852802864889561741
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1592861386679464488}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
