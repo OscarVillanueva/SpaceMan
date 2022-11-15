@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private float horizontal;
     private int healhPoints;
     private int manaPoints;
+    private float lastDistanceTravelled;
 
     private const string STATE = "State";
 
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour
     public const int MAX_MANA = 30;
     public const int MIN_HEALTH = 10;
     public const int MIN_MANA = 0;
-   
+
     void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -248,7 +249,11 @@ public class PlayerController : MonoBehaviour
 
     public float GetTravelledDistance()
     {
-        return transform.position.x - startPosition.x;
+        float currentDistance = transform.position.x - startPosition.x;
+
+        lastDistanceTravelled = Mathf.Max(currentDistance, lastDistanceTravelled);
+
+        return lastDistanceTravelled;
     }
 
     public void ChangeAnimationState(float state)

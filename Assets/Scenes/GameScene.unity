@@ -2629,6 +2629,7 @@ GameObject:
   - component: {fileID: 1486625129}
   - component: {fileID: 1486625128}
   - component: {fileID: 1486625127}
+  - component: {fileID: 1486625131}
   m_Layer: 5
   m_Name: GameOverCanvas
   m_TagString: Untagged
@@ -2721,6 +2722,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1486625131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486625126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea011afc56c01734a8452b140f40f0c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 136913231}
 --- !u!1 &1628470926
 GameObject:
   m_ObjectHideFlags: 0
@@ -3223,6 +3237,7 @@ MonoBehaviour:
   - {fileID: 989056204975627086, guid: da8f9393471f67949b98f93b7264e3dd, type: 3}
   - {fileID: 3634731979217436814, guid: a3f9fa144db498846a5d2dc44dc6703f, type: 3}
   - {fileID: 5090191503350867931, guid: 2327f996cab7d83478974ba6f2bec619, type: 3}
+  - {fileID: 5371056934715621699, guid: ca5ab103b99560842af25f1aa608451b, type: 3}
   levelStartPosition: {fileID: 962587008}
 --- !u!4 &1816728142
 Transform:

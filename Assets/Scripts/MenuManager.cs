@@ -25,8 +25,9 @@ public class MenuManager : MonoBehaviour
         inGameCanvas.enabled = enabled;
     }
 
-    public void ShowGameOverMenu(bool enabled)
+    public void ShowGameOverMenu(bool enabled, int score)
     {
+        gameOverCanvas.GetComponent<GameOverCanvasController>().SetScore(score);
         gameOverCanvas.enabled = enabled;
         inGameCanvas.enabled = !enabled;
     }

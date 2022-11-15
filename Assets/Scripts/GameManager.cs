@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1.0f;
                 currentGameState = GameState.inGame;
                 LevelManager.sharedInstance.ClearLevelBlocks();
-                MenuManager.sharedInstance.ShowGameOverMenu(false);
+                MenuManager.sharedInstance.ShowGameOverMenu(false, 0);
                 Invoke(nameof(ReloadLevel), 0.1f);
                 break;
 
@@ -83,7 +83,8 @@ public class GameManager : MonoBehaviour
 
     private void StopTime()
     {
-        MenuManager.sharedInstance.ShowGameOverMenu(true);
+        float score = FindObjectOfType<PlayerController>().GetTravelledDistance();
+        MenuManager.sharedInstance.ShowGameOverMenu(true, (int)score);
         Time.timeScale = 0.0f;
     }
 

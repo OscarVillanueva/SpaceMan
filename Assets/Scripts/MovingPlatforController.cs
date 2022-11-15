@@ -9,7 +9,7 @@ public class MovingPlatforController : MonoBehaviour
     private List<ContactPoint2D> contacts = new List<ContactPoint2D>();
 
     // Awake is called before start at object initialize
-    void Awake()
+    void Start()
     {
         collider2d = GetComponent<Collider2D>();
     }

@@ -17,10 +17,12 @@ public class LevelBlock : MonoBehaviour
             breaks = new Dictionary<string, float>
             {
                 { "StartPoint", -5.0f },
+                { "IntermidatePoint", -5.0f },
                 { "SecondPoint", -8.0f },
                 { "DeepPoint", -12.5f },
                 { "UpPoint", -10.0f },
                 { "LastPoint", -7.0f },
+                { "EndPoint", -1.0f }
             };
         }
     }

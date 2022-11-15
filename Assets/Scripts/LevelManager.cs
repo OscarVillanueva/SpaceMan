@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager sharedInstance;
 
     [SerializeField] private List<LevelBlock> levelBlocks;
-    [SerializeField] private Transform levelStartPosition; 
+    [SerializeField] private Transform levelStartPosition;
 
     private List<LevelBlock> currentLevelBlocks;
 
@@ -28,6 +28,8 @@ public class LevelManager : MonoBehaviour
 
     public void AddLevelBlock()
     {
+        if (currentLevelBlocks.Count > 2) return;
+
         int randomIndex = Random.Range(0, levelBlocks.Count);
 
         LevelBlock block;
@@ -44,7 +46,8 @@ public class LevelManager : MonoBehaviour
             spawnPostion = currentLevelBlocks[currentLevelBlocks.Count - 1].endPoint.position;
         }
 
-        // Agregamos al bloque el level manager como hijo, false para evitar que los hijos mantengan las transformaciones del padre
+        // Agregamos al bloque el level manager como hijo, false para
+        // evitar que los hijos mantengan las transformaciones del padre
         block.transform.SetParent(this.transform, false);
 
         // Unimos el punto de final del bloque anterior con el inicio del nuevo bloque
@@ -52,6 +55,7 @@ public class LevelManager : MonoBehaviour
 
         block.transform.position = correction;
         currentLevelBlocks.Add(block);
+
     }
 
     public void RemoveLevelBlock()
